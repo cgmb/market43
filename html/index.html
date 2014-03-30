@@ -6,16 +6,20 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <br><br>
-<center><img src="title.png"></center>
-<form>
-	<br><br><br><br><br>
-	<center>Username: <input type="text" name="username" size=20> </center>
+<center>
+	<img src="title.png">
+</center>
+<br><br><br><br><br>
+<form class="login-form">
+	<span class="form-label">Username:</span>
+	<input type="text" name="username" size=20>
 	<br>	
-	<center>Password: <input type="password" name="password" size=20> </center>
+	<span class="form-label">Password:</span>
+	<input type="password" name="password" size=20>
 	<br>
-	<center><input type="button" value="Login" onClick="Login(this.form);">
-	<input type="button" value="Register" onClick="location.href='dashboard.html';"></center>
-	
+	<br>
+	<input type="button" value="Login" onClick="Login(this.form);">
+	<input type="button" value="Register" onClick="location.href='dashboard.html';">
 </form>
 </body>
 </html>

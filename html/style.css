@@ -21,3 +21,15 @@ ul {
   margin: 0;
   list-style-type: none;
 }
+
+.login-form {
+  display: block;
+  text-align: center;
+}
+
+.form-label {
+  display: inline-block;
+  width: 140px;
+  text-align: right;
+  margin-right: 5px;
+}
