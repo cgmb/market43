@@ -3,6 +3,10 @@ body {
   color: grey;
 }
 
+nav {
+  margin-bottom: 5em;
+}
+
 li {
   display: inline;
   float: left;
@@ -38,4 +42,14 @@ ul {
   width: 50em;
   margin: 5em auto;
   text-align: center;
+}
+
+.banner {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.current-item {
+  font-weight: bold
 }
