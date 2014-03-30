@@ -33,3 +33,9 @@ ul {
   text-align: right;
   margin-right: 5px;
 }
+
+.transaction-table {
+  width: 50em;
+  margin: 5em auto;
+  text-align: center;
+}
