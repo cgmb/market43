@@ -1,0 +1,32 @@
+Here are some future plans for our SQL:
+
+
+INDEX PAGE
+- check user credentials against user database
+
+===============================================================================
+
+DASHBOARD
+- retrieve and display bids made by the user (bid.listing -> listing.listingid)
+- retrieve and display auctions made by the user (listing.listingid)
+
+===============================================================================
+
+SEARCH
+- retrieve all listings for items where itemname includes $SEARCH
+
+SELECT *
+FROM item AS i INNER JOIN item_type AS t ON i.ItemType == t.ItemTypeId
+  INNER JOIN listing as l ON i.ItemId == l.ListedItemId
+WHERE t.Name LIKE "%$SEARCH%";
+
+===============================================================================
+
+INVENTORY
+- retrieve and display all items with owneruserid of user
+- display count, item, description, craftables
+
+===============================================================================
+
+HISTORY
+- retrieve and display transactions linked to user
