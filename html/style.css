@@ -43,6 +43,11 @@ ul {
   text-align: center;
 }
 
+.item-table {
+  width: 50em;
+  text-align: center;
+}
+
 .banner {
   display: block;
   margin-left: auto;
@@ -51,4 +56,13 @@ ul {
 
 .current-item {
   font-weight: bold
+}
+
+.item-icon {
+  display: inline-block;
+//  text-align: center;
+  margin-right: 1em;
+  vertical-align: middle;
+  max-width: 50px;
+  max-height: 50px;
 }
