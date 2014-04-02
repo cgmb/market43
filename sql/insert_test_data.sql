@@ -21,3 +21,16 @@ insert into transaction (NetBalanceChange, TransactionType, TransactionUser) val
   100,
   1,
   1);
+
+
+# new user with password:
+# trustno1
+# bcrypt 8 rounds
+insert into user (Email, Nickname, AccountType) values (
+  'billy@example.com',
+  'bob',
+  0);
+insert into credential (SaltedHash, User, Active) values (
+  '$2a$08$pwsPVEcHwPFDhlN.U7uueOiOuhMWbVQcLtT3LP5DC/iWj5YFwfWp6',
+  2,
+  true);

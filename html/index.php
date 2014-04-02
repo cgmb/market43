@@ -19,11 +19,8 @@
 			session_start() or die('Failed to create session');
 			$query="SELECT u.UserId FROM user AS u WHERE u.Email = '$email';";
 			$result=mysql_query($query) or die (mysql_error());
-			if (mysql_numrows($result) == 1) {
-				$_SESSION['userid'] = mysql_result($result, 0, 'u.UserId');
-			} else {
-				echo "No such user: $email";
-			}
+			(mysql_numrows($result) == 1) or die("No user with email: $email!");
+			$_SESSION['userid'] = mysql_result($result, 0, 'u.UserId');
 		}
 	}
 ?>

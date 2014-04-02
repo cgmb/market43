@@ -31,6 +31,7 @@
 	include('database_connect.php');
 	session_start() or die('Failed to create session');
 	$userid=$_SESSION['userid'];
+	!empty($userid) or die('Session lacks userid!');
 	$query="SELECT DISTINCT(i.ItemId), t.Name, t.IconPath, t.Rarity, t.Description FROM item AS i INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId INNER JOIN user ON i.OwnerUserId = '$userid';";
 	$result=mysql_query($query) or die (mysql_error());
 	$num=mysql_numrows($result);
