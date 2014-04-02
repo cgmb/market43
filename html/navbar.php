@@ -4,11 +4,11 @@ function create_navbar($current_page) {
 	$result = "<img class=\"banner\" src=\"title.png\">\n";
 
 	$pages = [
-		'Dashboard' => 'dashboard.html',
-		'Search' => 'search.html',
+		'Dashboard' => 'dashboard.php',
+		'Search' => 'search.php',
 		'Inventory' => 'inventory.php',
 		'History' => 'history.php',
-		'Credits' => 'credits.html',
+		'Credits' => 'credits.php',
 		'Logout' => 'index.php',
 	];
 

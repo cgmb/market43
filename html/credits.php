@@ -7,18 +7,10 @@
 </head>
 <body>
 
-<img class="banner" src="title.png">
-
-<nav>
-	<ul class="nav-list">
-		<li><a href="dashboard.html">Dashboard</a></li>
-		<li><a href="search.html">Search</a></li>
-		<li><a href="inventory.php">Inventory</a></li>
-		<li><a href="history.html">History</a></li>
-		<li><a href="index.html">Logout</a></li>	
-		<li class="current-item">Credits</li>
-	</ul>
-</nav>
+<?php
+	include('navbar.php');
+	echo create_navbar('credits.php');
+?>
 
 <H1>Credits</H1>
 
