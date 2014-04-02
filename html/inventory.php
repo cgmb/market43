@@ -29,7 +29,9 @@
 
 <?php 
 	include('database_connect.php');
-	$query="SELECT DISTINCT(i.ItemId), t.Name, t.IconPath, t.Rarity, t.Description FROM item AS i INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId;";
+	session_start() or die('Failed to create session');
+	$userid=$_SESSION['userid'];
+	$query="SELECT DISTINCT(i.ItemId), t.Name, t.IconPath, t.Rarity, t.Description FROM item AS i INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId INNER JOIN user ON i.OwnerUserId = '$userid';";
 	$result=mysql_query($query) or die (mysql_error());
 	$num=mysql_numrows($result);
 	$i=0; while ($i < $num) { 
