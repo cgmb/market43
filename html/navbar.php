@@ -8,7 +8,8 @@ function create_navbar($current_page) {
 		'Search' => 'search.html',
 		'Inventory' => 'inventory.php',
 		'History' => 'history.php',
-		'Login' => 'index.html',
+		'Credits' => 'credits.html',
+		'Logout' => 'index.html',
 	];
 
 	$result .= "<nav>\n\t<ul>\n";

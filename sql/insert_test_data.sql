@@ -1,3 +1,4 @@
+use market43;
 # note: enum AccountType { USER = 0; ADMIN = 1 }
 
 # new user with password:
@@ -12,5 +13,11 @@ insert into credential (SaltedHash, User, Active) values (
   1,
   true);
 insert into item (ItemType, OwnerUserId) values (
+  1,
+  1);
+
+# note: enum TransactionType { TRADE = 0, CREDIT = 1, CRAFT = 2 }
+insert into transaction (NetBalanceChange, TransactionType, TransactionUser) values (
+  100,
   1,
   1);

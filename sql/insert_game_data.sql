@@ -1,3 +1,4 @@
+use market43;
 insert into item_type (Name, IconPath, Rarity, Description) values (
   'Fountain of Money',
   'fountain_of_money.png',
