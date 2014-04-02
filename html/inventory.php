@@ -7,18 +7,10 @@
 </head>
 <body>
 
-<img class="banner" src="title.png">
-
-<nav>
-	<ul>
-		<li><a href="dashboard.html">Dashboard</li>
-		<li><a href="search.html">Search</a></li>
-		<li class="current-item">Inventory</li>
-		<li><a href="history.html">History</a></li>
-		<li><a href="index.html">Logout</a></li>	
-	</ul>
-</nav>
-
+<?php
+	include('navbar.php');
+	echo create_navbar('inventory.php');
+?>
 
 <H1>Inventory</H1>
 <table class="item-table">
@@ -36,23 +28,18 @@
 	</tr>
 
 <?php 
-	$username="root";
-	$password="your_password";
-	$database="market43";
-
-	mysql_connect('localhost', $username, $password);
-	@mysql_select_db($database) or die(mysql_error());
+	include('database_connect.php');
 	$query="SELECT DISTINCT(i.ItemId), t.Name, t.IconPath, t.Rarity, t.Description FROM item AS i INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId;";
 	$result=mysql_query($query) or die (mysql_error());
 	$num=mysql_numrows($result);
 	$i=0; while ($i < $num) { 
-	$field1=mysql_result($result, $i, "t.Name");
-	$field2=mysql_result($result, $i, "t.IconPath");
-	$field3=mysql_result($result, $i, "t.Description");
+	$name=mysql_result($result, $i, "t.Name");
+	$icon=mysql_result($result, $i, "t.IconPath");
+	$description=mysql_result($result, $i, "t.Description");
 	echo "<tr>
 		<th></th>
-		<td><img class=\"item-icon\" src=\"$field2\">$field1</td>
-		<td>$field3</td>
+		<td><img class=\"item-icon\" src=\"$icon\">$name</td>
+		<td>$description</td>
 		<td></td>";
 	$i++;}
 
