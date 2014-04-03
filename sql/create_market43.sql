@@ -27,7 +27,7 @@ create table recipe (InputItemType int unsigned,
   foreign key (OutputItemType) references item_type(ItemTypeId));
 create table listing (ListingId int unsigned auto_increment,
   MinimumBid int unsigned not null,
-  PostedTimestamp timestamp not null,
+  PostedTimestamp timestamp not null default current_timestamp,
   ExpiryTimestamp timestamp not null,
   ListedItemId int unsigned not null,
   ListingUserId int unsigned not null,
