@@ -54,12 +54,44 @@
 		<td>$expiry</td>
 	</tr>";
 	$i++;}
-
-	mysql_close();
 ?>
 </table>
 
 <H2>Your Auctions</H2>
+<table class="item-table">
+	<colgroup>
+		<col style="width: 15%" />
+		<col style="width: 50%" />
+		<col style="width: 35%" />
+	</colgroup>
+	<tr>
+		<th>current bid</th>
+		<th>listing</th>
+		<th>close time</th>
+	</tr>
+<?php
+	$query = "SELECT MAX(b.Value) CurrentBid, l.ExpiryTimestamp, i.Name, i.IconPath, b.Value
+	FROM listing AS l, item_type AS i, item AS x, bid as b
+	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing AND l.ListingUserId = '$userid'
+	ORDER BY l.ExpiryTimestamp;";
+
+	$result = mysql_query($query) or die (mysql_error());
+	$num = mysql_numrows($result);
+	$i=0; while ($i < $num) { 
+	$currentbid = mysql_result($result, $i, 'CurrentBid');
+	$expiry = mysql_result($result, $i, 'l.ExpiryTimestamp');
+	$name = mysql_result($result, $i, 'i.Name');
+	$icon = mysql_result($result, $i, 'i.IconPath');
+	echo "<tr>
+		<td>$currentbid</td>
+		<td><img class=\"item-icon\" src=\"$icon\">$name</td>
+		<td>$expiry</td>
+	</tr>";
+	$i++;}
+
+	mysql_close();
+?>
+</table>
 
 </body>
 </html>

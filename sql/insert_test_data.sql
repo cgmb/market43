@@ -43,20 +43,6 @@ insert into transaction (NetBalanceChange, TransactionType, TransactionUser) val
   1,
   2);
 
-
-insert into listing (MinimumBid, PostedTimestamp, ExpiryTimestamp,
-ListedItemId, ListingUserId) values (
-  10,
-  '2014-04-01 08:12:05',
-  '2014-04-08 08:12:05',
-  1,
-  1);
-insert into bid (Bidder, Listing, Value) values (
-  2,
-  1,
-  55);
-
-
 #user 3 (admin)
 insert into user (Email, Nickname, AccountType) values (
   'admin@example.com',
@@ -77,3 +63,30 @@ insert into credential (SaltedHash, User, Active) values (
   '$2a$08$.KqJXip9h26tP4GqBdMte.qbGhNkTnSJC3aJyiF6kXfN8cCtKzGJC',
   3,
   true);
+
+# user 4
+insert into user (Email, Nickname, AccountType) values (
+  'alice@example.com',
+  'Big Al',
+  0);
+# 123456
+insert into credential (SaltedHash, User, Active) values (
+  '$2a$08$z/S30rGGi7lm4DPMKz/S7O/GxvfEQsx7zRgjjZPukHjrF1ND0y9oq',
+  4,
+  true);
+
+insert into listing (MinimumBid, PostedTimestamp, ExpiryTimestamp,
+ListedItemId, ListingUserId) values (
+  10,
+  '2014-04-01 08:12:05',
+  '2014-04-08 08:12:05',
+  1,
+  1);
+insert into bid (Bidder, Listing, Value) values (
+  2,
+  1,
+  55);
+insert into bid (Bidder, Listing, Value) values (
+  4,
+  1,
+  60);
