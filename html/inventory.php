@@ -40,10 +40,11 @@
 	$icon=mysql_result($result, $i, "t.IconPath");
 	$description=mysql_result($result, $i, "t.Description");
 	echo "<tr>
-		<th></th>
+		<td></td>
 		<td><img class=\"item-icon\" src=\"$icon\">$name</td>
 		<td>$description</td>
-		<td></td>";
+		<td></td>
+	</tr>";
 	$i++;}
 
 	mysql_close();
