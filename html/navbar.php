@@ -9,7 +9,7 @@ function create_navbar($current_page) {
 		'Inventory' => 'inventory.php',
 		'History' => 'history.php',
 		'Credits' => 'credits.php',
-		'Logout' => 'index.php',
+		'Logout' => 'index.php?logout',
 	];
 
 	$result .= "<nav>\n\t<ul>\n";

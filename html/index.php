@@ -1,3 +1,28 @@
+<?php
+	if (!empty($_GET)) {
+		if (isset($_GET['logout'])) {
+			session_start() or die('Failed to create session');
+			session_unset();
+			session_destroy();
+		}
+	}
+
+	if (!empty($_POST)) {
+		$email = $_POST['email'];
+		if (!empty($email)) {
+			include('database_connect.php');
+			session_start() or die('Failed to create session');
+			$_SESSION = array();
+			$query="SELECT u.UserId FROM user AS u WHERE u.Email = '$email';";
+			$result=mysql_query($query) or die (mysql_error());
+			(mysql_numrows($result) == 1) or die("No user with email: $email!");
+			$_SESSION['userid'] = mysql_result($result, 0, 'u.UserId');
+			header('Location: dashboard.php');
+			exit();
+		}
+	}
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,21 +35,6 @@
 	<img src="title.png">
 </center>
 <br><br><br><br><br>
-
-<?php
-	if (!empty($_POST)) {
-		$email = $_POST['email'];
-		if (!empty($email)) {
-			include('database_connect.php');
-			session_start() or die('Failed to create session');
-			$query="SELECT u.UserId FROM user AS u WHERE u.Email = '$email';";
-			$result=mysql_query($query) or die (mysql_error());
-			(mysql_numrows($result) == 1) or die("No user with email: $email!");
-			$_SESSION['userid'] = mysql_result($result, 0, 'u.UserId');
-		}
-	}
-?>
-
 <form action='index.php' method='post' class="login-form">
 	<span class="form-label">Email:</span>
 	<input type="text" name="email" size=20>
