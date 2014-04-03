@@ -21,6 +21,10 @@ insert into transaction (NetBalanceChange, TransactionType, TransactionUser) val
   100,
   1,
   1);
+insert into transaction (NetBalanceChange, TransactionType, TransactionUser) values (
+  -50,
+  2,
+  1);
 
 
 # new user with password:
@@ -34,3 +38,7 @@ insert into credential (SaltedHash, User, Active) values (
   '$2a$08$pwsPVEcHwPFDhlN.U7uueOiOuhMWbVQcLtT3LP5DC/iWj5YFwfWp6',
   2,
   true);
+insert into transaction (NetBalanceChange, TransactionType, TransactionUser) values (
+  500,
+  1,
+  2);

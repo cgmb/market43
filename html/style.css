@@ -60,9 +60,17 @@ ul {
 
 .item-icon {
   display: inline-block;
-//  text-align: center;
   margin-right: 1em;
   vertical-align: middle;
   max-width: 50px;
   max-height: 50px;
+}
+
+.player-balance {
+/*
+  color: grey;
+  font-size: 10pt;
+  text-align: right;
+  vertical-align: text-top;
+*/
 }
