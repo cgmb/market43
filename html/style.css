@@ -66,6 +66,11 @@ ul {
   max-height: 50px;
 }
 
+.error-text {
+  color: red;
+  margin-bottom: 1em;
+}
+
 .player-balance {
 /*
   color: grey;
@@ -74,3 +79,4 @@ ul {
   vertical-align: text-top;
 */
 }
+
