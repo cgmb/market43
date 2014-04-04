@@ -44,16 +44,17 @@
 	$result = mysql_query($query) or die (mysql_error());
 	$num = mysql_numrows($result);
 	$i=0; while ($i < $num) { 
-	$expiry = mysql_result($result, $i, 'l.ExpiryTimestamp');
-	$name = mysql_result($result, $i, 'i.Name');
-	$icon = mysql_result($result, $i, 'i.IconPath');
-	$bid = mysql_result($result, $i, 'b.Value');
-	echo "<tr>
-		<td>$bid</td>
-		<td><img class=\"item-icon\" src=\"$icon\">$name</td>
-		<td>$expiry</td>
-	</tr>";
-	$i++;}
+		$expiry = mysql_result($result, $i, 'l.ExpiryTimestamp');
+		$name = mysql_result($result, $i, 'i.Name');
+		$icon = mysql_result($result, $i, 'i.IconPath');
+		$bid = mysql_result($result, $i, 'b.Value');
+		echo "<tr>
+			<td>$bid</td>
+			<td><img class=\"item-icon\" src=\"$icon\">$name</td>
+			<td>$expiry</td>
+		</tr>";
+		$i++;
+	}
 ?>
 </table>
 
@@ -73,21 +74,23 @@
 	$query = "SELECT MAX(b.Value) CurrentBid, l.ExpiryTimestamp, i.Name, i.IconPath, b.Value
 	FROM listing AS l, item_type AS i, item AS x, bid as b
 	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing AND l.ListingUserId = '$userid'
+	GROUP BY l.ListingId
 	ORDER BY l.ExpiryTimestamp;";
 
 	$result = mysql_query($query) or die (mysql_error());
 	$num = mysql_numrows($result);
 	$i=0; while ($i < $num) { 
-	$currentbid = mysql_result($result, $i, 'CurrentBid');
-	$expiry = mysql_result($result, $i, 'l.ExpiryTimestamp');
-	$name = mysql_result($result, $i, 'i.Name');
-	$icon = mysql_result($result, $i, 'i.IconPath');
-	echo "<tr>
-		<td>$currentbid</td>
-		<td><img class=\"item-icon\" src=\"$icon\">$name</td>
-		<td>$expiry</td>
-	</tr>";
-	$i++;}
+		$currentbid = mysql_result($result, $i, 'CurrentBid');
+		$expiry = mysql_result($result, $i, 'l.ExpiryTimestamp');
+		$name = mysql_result($result, $i, 'i.Name');
+		$icon = mysql_result($result, $i, 'i.IconPath');
+		echo "<tr>
+			<td>$currentbid</td>
+			<td><img class=\"item-icon\" src=\"$icon\">$name</td>
+			<td>$expiry</td>
+		</tr>";
+		$i++;
+	}
 
 	mysql_close();
 ?>
