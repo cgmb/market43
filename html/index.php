@@ -64,7 +64,7 @@
 	<br>
 	<br>
 	<input type="submit" value="Login">
-	<input type="button" value="Register" onClick="location.href='dashboard.php';">
+	<input type="button" value="Register" onClick="location.href='register.php';">
 </form>
 </body>
 </html>
