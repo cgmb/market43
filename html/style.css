@@ -71,12 +71,25 @@ ul {
   margin-bottom: 1em;
 }
 
+.player-name {
+  color: grey;
+  font-weight: bold;
+  font-size: 10pt;
+  text-align: right;
+  vertical-align: text-top;
+}
+
 .player-balance {
-/*
   color: grey;
   font-size: 10pt;
   text-align: right;
   vertical-align: text-top;
-*/
+}
+
+.player-liabilities {
+  color: grey;
+  font-size: 10pt;
+  text-align: right;
+  vertical-align: text-top;
 }
 
