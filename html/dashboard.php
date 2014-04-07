@@ -1,3 +1,8 @@
+<?php
+	include('session_start.php');
+	$userid = $_SESSION['userid'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,10 +16,8 @@
 	include('navbar.php');
 	echo create_navbar('dashboard.php');
 
-	session_start() or die('Failed to create session');
 	include('database_connect.php');
 	include('queries.php');
-	$userid = $_SESSION['userid'];
 
 	if (is_player_mod($userid)) {
 		# handle submitted name changes

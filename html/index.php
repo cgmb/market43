@@ -9,6 +9,8 @@
 
 		if (isset($_GET['authfailed'])) {
 			$errortext = "Authentication failed.<br>Check your email and password.";
+		} else if (isset($_GET['sessionexpired'])) {
+			$errortext = "Session expired.<br>Please log in again.";
 		}
 	}
 

@@ -1,3 +1,8 @@
+<?php
+	include('session_start.php');
+	$userid = $_SESSION['userid'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>

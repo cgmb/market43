@@ -1,3 +1,8 @@
+<?php
+	include('session_start.php');
+	$userid = $_SESSION['userid'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,9 +17,6 @@
 	echo create_navbar('listing.php');
 
 	include('database_connect.php');
-	session_start() or die('Failed to create session');
-	$userid=$_SESSION['userid'];
-	!empty($userid) or die('Session lacks userid!');
 
 	if (!empty($_GET)) {
 		if (isset($_GET['id'])) {

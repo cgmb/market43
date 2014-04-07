@@ -1,3 +1,8 @@
+<?php
+	include('session_start.php');
+	$userid = $_SESSION['userid'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,9 +18,6 @@
 
 	include('database_connect.php');
 	include('queries.php');
-	session_start() or die('Failed to create session');
-	$userid=$_SESSION['userid'];
-	!empty($userid) or die('Session lacks userid!');
 
 	if (!empty($_GET)) {
 		if (isset($_GET['typeid'])) {

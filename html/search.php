@@ -1,3 +1,8 @@
+<?php
+	include('session_start.php');
+	$userid = $_SESSION['userid'];
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,9 +44,6 @@
 			</tr>';
 
 		include('database_connect.php');
-		session_start() or die('Failed to create session');
-		$userid=$_SESSION['userid'];
-		!empty($userid) or die('Session lacks userid!');
 		$query = "SELECT t.Name, t.IconPath, t.Description, u.Nickname, l.ListingId,
 			MAX(b.Value) CurrentBid
 			FROM item AS i INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId
