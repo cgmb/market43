@@ -12,6 +12,7 @@
 	echo create_navbar('item.php');
 
 	include('database_connect.php');
+	include('queries.php');
 	session_start() or die('Failed to create session');
 	$userid=$_SESSION['userid'];
 	!empty($userid) or die('Session lacks userid!');
@@ -20,17 +21,41 @@
 		if (isset($_GET['typeid'])) {
 			$itemtype = mysql_real_escape_string($_GET['typeid']);
 
-			$query = "SELECT DISTINCT(i.ItemId)
-				FROM item AS i
-				INNER JOIN item_type AS t ON i.ItemType = '$itemtype'
-				INNER JOIN user ON i.OwnerUserId = '$userid'
-				WHERE i.ItemId NOT IN (
-					SELECT m.ItemId FROM item AS m
-					INNER JOIN listing AS l ON l.ListedItemId = m.ItemId
-					WHERE l.ExpiryTimestamp > CURRENT_TIMESTAMP
-				);";
-			$result = mysql_query($query) or die (mysql_error());
-			$rows = mysql_numrows($result);
+			# handle request to post listing
+			$errortext = '';
+			if (!empty($_POST)) {
+				if (!empty($_POST['minbid'])) {
+					$minbid = mysql_real_escape_string($_POST['minbid']);
+
+					# pick a random available item to be the subject of the auction
+					$availableresult = get_available_items($userid, $itemtype);
+					print_arr($availableresult);
+					$available = count($availableresult);
+					if ($available > 0) {
+						# php is such a hacky language :\
+						# reset returns the first element of the array
+						# first reset for row, second for column
+						$itemid = reset(reset($availableresult));
+						$query = "INSERT INTO listing (
+							MinimumBid, ExpiryTimestamp, ListedItemId, ListingUserId) values(
+							'$minbid', NOW() + INTERVAL 2 HOUR, '$itemid', '$userid');";
+						if (!mysql_query($query)) {
+							$errortext = 'Failed to post listing.<br>' . mysql_error();
+						}
+					} else {
+						$errortext = 'No available items to list!';
+					}
+				} else {
+					$errortext = 'All fields are required.';
+				}
+			}
+
+			# find the number of owned items of type
+			$result = get_owned_items($userid, $itemtype);
+			$owned = count($result);
+
+			$availableresult = get_available_items($userid, $itemtype);
+			$available = count($availableresult);
 
 			# find a nice description of the item
 			$query = "SELECT t.Name, t.IconPath, t.Description
@@ -38,23 +63,33 @@
 				INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId
 				WHERE '$itemtype' = i.ItemType";
 			$result = mysql_query($query) or die (mysql_error());
-			(mysql_numrows($result) == 1) or die('Unexpected data!');
+			(mysql_numrows($result) >= 1) or die('Unexpected data!');
 			$name = mysql_result($result, 0, 't.Name');
 			$icon = mysql_result($result, 0, 't.IconPath');
 			$description = mysql_result($result, 0, 't.Description');
 
 			echo "<H1><img class=\"item-icon\" src=\"$icon\">$name</H1>";
 			echo "<em>$description</em>";
-			echo "<br><em>Number available: $rows<br>";
+			echo "<br><br>Number owned: $owned<br>";
+			echo "Number available: $available<br>";
+
+			# display the UI to post a listing
+			if ($available > 0) {
+				echo '<H2>Post Listing</H2>';
+				echo "<div class='error-text'>$errortext</div>";
+				echo "<form action='item.php?typeid=$itemtype' method='post'>
+					Minimum Bid: <input type='number' name='minbid'>
+					<br><br>
+					<input type='submit' value='Sell Item'>
+				</form>";
+			} else if (!empty($errortext)) {
+				echo "<div class='error-text'>$errortext</div>";
+			}
 		}
-	}
-
-	if (!empty($_POST)) {
-
 	}
 ?>
 
-<H1>Crafting Table</H1>
+<H2>Crafting Table</H2>
 <table class="item-table">
 	<colgroup>
 		<col style="width: 15%" />
