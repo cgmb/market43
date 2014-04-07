@@ -20,7 +20,7 @@
 			if (!empty($email) && !empty($pass)) {
 				if ($pass == $pass2) {
 					$query = "INSERT INTO user (Email, Nickname, AccountType) values (
-						'$email', '$nickname', 1)";
+						'$email', '$nickname', 0)";
 					if (mysql_query($query)) {
 
 						# get the userid
