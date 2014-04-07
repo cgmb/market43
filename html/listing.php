@@ -27,6 +27,7 @@
 #				(mysql_numrows($balanceresult) == 1) or die('Unexpected user data!');
 #				$usablebalance = mysql_result($result, 0, 'UsableBalance');
 
+				# post the bid
 				$bidvalue = mysql_real_escape_string($_POST['bidvalue']);
 				$update = "INSERT INTO bid (Bidder, Listing, Value) values (
 					$userid, $listingid, $bidvalue)
@@ -37,6 +38,7 @@
 				$updateresult = mysql_query($update) or die (mysql_error());
 			}
 
+			# find the seller and the max bid
 			$query2 = "SELECT u.Nickname, MAX(b.Value) CurrentBid
 		  	FROM listing as l
 				INNER JOIN user AS u ON l.ListingUserId = u.UserId
@@ -55,6 +57,7 @@
 				<input type='submit' value='Place Bid'>
 			</form><br>";
 
+			# find a nice description of the item
 			$query = "SELECT t.Name, t.IconPath, t.Description
 				FROM listing as l
 				INNER JOIN item as i ON l.ListedItemId = i.ItemId
