@@ -22,6 +22,17 @@
 		return $balance;
 	}
 
+	# is player a moderator with special privilages?
+	function is_player_mod($userid) {
+		$query = "SELECT AccountType FROM user WHERE UserId = '$userid';";
+		$result = mysql_query($query) or die (mysql_error());
+		if (mysql_numrows($result) == 1) {
+			return (mysql_result($result, 0, 'AccountType') == 1);
+		} else {
+			return false;
+		}
+	}
+
 	# sum of all a given player's bids
 	function get_player_liabilities($userid) {
 		$query = "SELECT SUM(b.Value) AS Liabilities

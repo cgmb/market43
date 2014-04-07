@@ -15,6 +15,19 @@
 	include('database_connect.php');
 	include('queries.php');
 	$userid = $_SESSION['userid'];
+
+	if (is_player_mod($userid)) {
+		# handle submitted name changes
+		if (!empty($_POST)) {
+			$newname = mysql_real_escape_string($_POST['newname']);
+			$playerid = mysql_real_escape_string($_POST['playerid']);
+			$query = "UPDATE user SET NickName='$newname'
+				WHERE UserId = '$playerid';"; 
+			if (!mysql_query($query)) {
+				echo '<br><div class="error-text">Failed to update name.</div>';
+			}
+		}
+	}
 ?>
 
 <div class="player-name">
@@ -135,6 +148,42 @@
 	}
 ?>
 </table>
+
+<?php
+	if (is_player_mod($userid)) {
+		# create interface for changing names
+		echo '<H2>Name Moderation</H2>';
+		echo '<table class="item-table">
+			<colgroup>
+				<col style="width: 35%" />
+				<col style="width: 50%" />
+			</colgroup>
+			<tr>
+				<th>current name</th>
+				<th>new name</th>
+				<th></th>
+			</tr>';
+
+		$query = "SELECT UserId, Nickname FROM user ORDER BY Nickname;";
+		$result = mysql_query($query) or die (mysql_error());
+		$num = mysql_numrows($result);
+		$i=0; while ($i < $num) { 
+			$playername = mysql_result($result, $i, 'Nickname');
+			$playerid = mysql_result($result, $i, 'UserId');
+			echo "<tr>
+				<form action='dashboard.php' method='post'>
+					<td>$playername</td>
+					<td>
+						<input type='text' name='newname' />
+						<input type='hidden' name='playerid' value='$playerid' />
+						<input type='submit' value='Submit'>
+					</td>
+				</form>
+			</tr>";
+			$i++;
+		}
+	}
+?>
 
 </body>
 </html>
