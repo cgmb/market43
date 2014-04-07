@@ -3,43 +3,67 @@
 	if (!empty($_POST)) {
 		if (empty($_POST['nickname']) or empty($_POST['email']) or empty($_POST['password']) or empty($_POST['password2'])) {
 			$errortext = 'Cannot create account. All fields are required.';
-		}
+		} else {
 
-		$nickname = mysql_real_escape_string($_POST['nickname']);
-		$email = mysql_real_escape_string($_POST['email']);
-		$pass = $_POST['password'];
-		$pass2 = $_POST['password2'];
+			$nickname = mysql_real_escape_string($_POST['nickname']);
+			$email = mysql_real_escape_string($_POST['email']);
+			$pass = $_POST['password'];
+			$pass2 = $_POST['password2'];
 
-		include('database_connect.php');
-		session_start() or die('Failed to create session');
+			include('database_connect.php');
+			session_start() or die('Failed to create session');
 
-		if (!empty($email) && !empty($pass)) {
-			if ($pass == $pass2) {
-				$query = "INSERT INTO user (Email, Nickname, AccountType) values (
-					'$nickname', '$email', 1)";
-				if (mysql_query($query)) {
-					$query = "SELECT UserId FROM user WHERE Email = '$email'";
-					$result = mysql_query($query) or die (mysql_error());
-					(mysql_numrows($result) == 1) or die('Unexpected data!');
-					$userid = mysql_result($result, 0, 'UserId');
+			$query = "SELECT UserId FROM user WHERE '$email' = Email";
+			$results = mysql_query($query) or die('Duplicate check failed.');
+			$isnewaccount = (mysql_numrows($result) == 0);
 
-					$options = array('cost' => 8);
-					$hash = password_hash($pass, PASSWORD_BCRYPT, $options);
-
-					$query = "INSERT INTO credential (SaltedHash, User, Active) values (
-					'$hash', '$userid', true)";
+			if (!empty($email) && !empty($pass)) {
+				if ($pass == $pass2) {
+					$query = "INSERT INTO user (Email, Nickname, AccountType) values (
+						'$email', '$nickname', 1)";
 					if (mysql_query($query)) {
-						$_SESSION['userid'] = $userid;
-						header('Location: dashboard.php');
-						exit();
+
+						# get the userid
+						$query = "SELECT UserId FROM user WHERE Email = '$email'";
+						$result = mysql_query($query) or die (mysql_error());
+						(mysql_numrows($result) == 1) or die('Unexpected data!');
+						$userid = mysql_result($result, 0, 'UserId');
+
+						# give the user his starting items
+						if ($isnewaccount) {
+							$query = "INSERT INTO item (ItemType, OwnerUserId) values (
+								1, '$userid')";
+							if (!mysql_query($query)) {
+								die('You\'ve been robbed! Email the administrator.');
+							}
+
+							$query = "INSERT INTO transaction (
+								NetBalanceChange, TransactionType, TransactionUser) values (
+								1000, 1, '$userid')";
+							if (!mysql_query($query)) {
+								die('You\'ve been robbed! Email the administrator.');
+							}
+						}
+
+						# setup his credentials
+						$options = array('cost' => 8);
+						$hash = password_hash($pass, PASSWORD_BCRYPT, $options);
+
+						$query = "INSERT INTO credential (SaltedHash, User, Active) values (
+						'$hash', '$userid', true)";
+						if (mysql_query($query)) {
+							$_SESSION['userid'] = $userid;
+							header('Location: dashboard.php');
+							exit();
+						} else {
+							$errortext = 'Cannot create account with that password.';
+						}
 					} else {
-						$errortext = 'Cannot create account with that password.';
+						$errortext = 'Could not create account with that email.';
 					}
 				} else {
-					$errortext = 'Could not create account with that email.';
+					$errortext = 'Passwords don\'t match.<br>Check your passwords and try again.';
 				}
-			} else {
-				$errortext = 'Passwords don\'t match.<br>Check your passwords and try again.';
 			}
 		}
 	}
