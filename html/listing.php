@@ -39,7 +39,7 @@
 			}
 
 			# find the seller and the max bid
-			$query2 = "SELECT u.Nickname, MAX(b.Value) CurrentBid
+			$query2 = "SELECT u.UserId, u.Nickname, MAX(b.Value) CurrentBid
 		  	FROM listing as l
 				INNER JOIN user AS u ON l.ListingUserId = u.UserId
 				INNER JOIN bid AS b ON l.ListingId = b.Listing
@@ -47,15 +47,18 @@
 			$result2 = mysql_query($query2) or die (mysql_error());
 			(mysql_numrows($result2) == 1) or die('Unexpected seller data!');
 			$seller = mysql_result($result2, 0, 'u.Nickname');
+			$sellerid = mysql_result($result2, 0, 'u.UserId');
 			$currentbid = mysql_result($result2, 0, 'CurrentBid');
 
-			$minbid = $currentbid + 5;
-			echo "Bid on <strong>$seller</strong>'s listing?<br>";
+			if ($sellerid != $userid) {
+				$minbid = $currentbid + 5;
+				echo "Bid on <strong>$seller</strong>'s listing?<br>";
 
-			echo "<form action='listing.php?id=$listingid' method='post'>
-				<input type='number' name='bidvalue' min='$minbid'>
-				<input type='submit' value='Place Bid'>
-			</form><br>";
+				echo "<form action='listing.php?id=$listingid' method='post'>
+					<input type='number' name='bidvalue' min='$minbid'>
+					<input type='submit' value='Place Bid'>
+				</form><br>";
+			}
 
 			# find a nice description of the item
 			$query = "SELECT t.Name, t.IconPath, t.Description
