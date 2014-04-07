@@ -82,20 +82,20 @@
 	<tr>
 		<th>current bid</th>
 		<th>listing</th>
-		<th>close time</th>
+		<th>time until close</th>
 	</tr>
 <?php
-	$query = "SELECT MAX(b.Value) CurrentBid, l.ListingId, l.ExpiryTimestamp, i.Name, i.IconPath
+	$query = "SELECT MAX(b.Value) CurrentBid, l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath
 	FROM listing AS l, item_type AS i, item AS x, bid as b
 	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing AND l.ListingUserId = '$userid'
 	GROUP BY l.ListingId
-	ORDER BY l.ExpiryTimestamp;";
+	ORDER BY CurrentBid DESC;";
 
 	$result = mysql_query($query) or die (mysql_error());
 	$num = mysql_numrows($result);
 	$i=0; while ($i < $num) { 
 		$currentbid = mysql_result($result, $i, 'CurrentBid');
-		$expiry = mysql_result($result, $i, 'l.ExpiryTimestamp');
+		$expiry = mysql_result($result, $i, 'TimeRemaining');
 		$name = mysql_result($result, $i, 'i.Name');
 		$icon = mysql_result($result, $i, 'i.IconPath');
 		$listing = mysql_result($result, $i, 'l.ListingId');
@@ -108,8 +108,31 @@
 		</tr>";
 		$i++;
 	}
+?>
+<?php
+	$query = "SELECT l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath
+	FROM listing AS l, item_type AS i, item AS x
+	WHERE i.ItemTypeId = x.ItemType AND l.ListingUserId = '$userid' 
+	AND l.ListingId NOT IN (SELECT Listing FROM bid)
+	GROUP BY l.ListingId
+	ORDER BY l.ExpiryTimestamp;";
 
-	mysql_close();
+	$result = mysql_query($query) or die (mysql_error());
+	$num = mysql_numrows($result);
+	$i=0; while ($i < $num) { 
+		$expiry = mysql_result($result, $i, 'TimeRemaining');
+		$name = mysql_result($result, $i, 'i.Name');
+		$icon = mysql_result($result, $i, 'i.IconPath');
+		$listing = mysql_result($result, $i, 'l.ListingId');
+		echo "<tr>
+			<td>0</td>
+			<td><a href=\"listing.php?id=$listing\">
+				<img class=\"item-icon\" src=\"$icon\">$name</a>
+			</td>
+			<td>$expiry</td>
+		</tr>";
+		$i++;
+	}
 ?>
 </table>
 

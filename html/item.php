@@ -29,7 +29,6 @@
 
 					# pick a random available item to be the subject of the auction
 					$availableresult = get_available_items($userid, $itemtype);
-					print_arr($availableresult);
 					$available = count($availableresult);
 					if ($available > 0) {
 						# php is such a hacky language :\
@@ -40,7 +39,7 @@
 							MinimumBid, ExpiryTimestamp, ListedItemId, ListingUserId) values(
 							'$minbid', NOW() + INTERVAL 2 HOUR, '$itemid', '$userid');";
 						if (!mysql_query($query)) {
-							$errortext = 'Failed to post listing.<br>' . mysql_error();
+							$errortext = 'Failed to post listing.';
 						}
 					} else {
 						$errortext = 'No available items to list!';
