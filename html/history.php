@@ -33,7 +33,7 @@
 <?php 
 	include('database_connect.php');
 	$query="SELECT t.NetBalanceChange, t.TransactionType, t.TransactionTimestamp
-		FROM transaction as t;";
+		FROM transaction as t WHERE t.TransactionUser = '$userid';";
 	$result=mysql_query($query) or die (mysql_error());
 	$num=mysql_numrows($result);
 	$i=0; while ($i < $num) { 
@@ -53,8 +53,6 @@
 		<td>$typename</td>
 		<td>$timestamp</td>";
 	$i++;}
-
-	mysql_close();
  ?>
 
 </table>
