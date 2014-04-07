@@ -66,6 +66,7 @@
 	$query = "SELECT DISTINCT l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath, b.Value
 	FROM listing AS l, item_type AS i, item AS x, bid as b
 	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing AND b.Bidder = '$userid'
+	AND x.ItemId = l.ListedItemId
 	ORDER BY l.ExpiryTimestamp;";
 
 	$result = mysql_query($query) or die (mysql_error());
