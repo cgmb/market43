@@ -43,6 +43,12 @@
 							if (!mysql_query($query)) {
 								die('You\'ve been robbed! Email the administrator.');
 							}
+
+							$query = "INSERT INTO item (ItemType, OwnerUserId) values (
+								2, '$userid')";
+							if (!mysql_query($query)) {
+								die('You\'ve been robbed! Email the administrator.');
+							}
 						}
 
 						# setup his credentials

@@ -37,7 +37,8 @@
 	$query="SELECT COUNT(DISTINCT(i.ItemId)) Count, t.ItemTypeId, t.Name, t.IconPath, t.Rarity, t.Description
 		FROM item AS i
 		INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId
-		INNER JOIN user ON i.OwnerUserId = '$userid';";
+		INNER JOIN user ON i.OwnerUserId = '$userid'
+		GROUP BY t.ItemTypeId;";
 
 	$result=mysql_query($query) or die (mysql_error());
 	$num=mysql_numrows($result);

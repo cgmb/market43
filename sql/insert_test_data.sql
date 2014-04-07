@@ -18,6 +18,9 @@ insert into credential (SaltedHash, User, Active) values (
 insert into item (ItemType, OwnerUserId) values (
   1,
   1);
+insert into item (ItemType, OwnerUserId) values (
+  2,
+  1);
 
 insert into transaction (NetBalanceChange, TransactionType, TransactionUser) values (
   100,
