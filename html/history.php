@@ -15,29 +15,26 @@
 <H1>Transaction History</H1>
 <table class="transaction-table">
 	<colgroup>
-		<col style="width: 25%" />
-		<col style="width: 25%" />
-		<col style="width: 25%" />
-		<col style="width: 25%" />
+		<col style="width: 33%" />
+		<col style="width: 33%" />
+		<col style="width: 33%" />
 	</colgroup>
 	<tr>
-		<th>date</th>
-		<th>time</th>
 		<th>value</th>
 		<th>type</th>
+		<th>transaction time</th>
 	</tr>
 
 <?php 
 	include('database_connect.php');
-	$query="SELECT t.NetBalanceChange, t.TransactionType FROM transaction as t;";
+	$query="SELECT t.NetBalanceChange, t.TransactionType, t.TransactionTimestamp
+		FROM transaction as t;";
 	$result=mysql_query($query) or die (mysql_error());
 	$num=mysql_numrows($result);
 	$i=0; while ($i < $num) { 
-//	opps. these don't exist
-//	$date=mysql_result($result, $i, "t.date");
-//	$time=mysql_result($result, $i, "t.time");
 	$value=mysql_result($result, $i, 't.NetBalanceChange');
 	$type=mysql_result($result, $i, 't.TransactionType');
+	$timestamp=mysql_result($result, $i, 't.TransactionTimestamp');
 	if ($type == 0) {
 		$typename = 'trade';
 	} else if ($type == 1) {
@@ -47,10 +44,9 @@
 	}
 
 	echo "<tr class=\"transaction-$typename\">
-		<th></th>
-		<td></td>
 		<td>$value</td>
-		<td>$typename</td>";
+		<td>$typename</td>
+		<td>$timestamp</td>";
 	$i++;}
 
 	mysql_close();
