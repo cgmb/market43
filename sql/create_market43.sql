@@ -43,7 +43,7 @@ create table transaction (TransactionId int unsigned auto_increment,
 create table bid (Bidder int unsigned,
   Listing int unsigned,
   Value int unsigned,
-  primary key (Bidder, Listing, Value),
+  primary key (Bidder, Listing),
   foreign key (Bidder) references user(UserId),
   foreign key (Listing) references listing(ListingId));
 create table credential (SaltedHash binary(60),
