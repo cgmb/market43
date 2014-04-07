@@ -60,10 +60,10 @@
 	<tr>
 		<th>bid</th>
 		<th>listing</th>
-		<th>close time</th>
+		<th>time left</th>
 	</tr>
 <?php
-	$query = "SELECT l.ExpiryTimestamp, l.ListingId, i.Name, i.IconPath, b.Value
+	$query = "SELECT DISTINCT l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath, b.Value
 	FROM listing AS l, item_type AS i, item AS x, bid as b
 	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing AND b.Bidder = '$userid'
 	ORDER BY l.ExpiryTimestamp;";
@@ -71,7 +71,7 @@
 	$result = mysql_query($query) or die (mysql_error());
 	$num = mysql_numrows($result);
 	$i=0; while ($i < $num) { 
-		$expiry = mysql_result($result, $i, 'l.ExpiryTimestamp');
+		$expiry = mysql_result($result, $i, 'TimeRemaining');
 		$name = mysql_result($result, $i, 'i.Name');
 		$icon = mysql_result($result, $i, 'i.IconPath');
 		$bid = mysql_result($result, $i, 'b.Value');
@@ -98,7 +98,7 @@
 	<tr>
 		<th>current bid</th>
 		<th>listing</th>
-		<th>time until close</th>
+		<th>time left</th>
 	</tr>
 <?php
 	$query = "SELECT MAX(b.Value) CurrentBid, l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath
