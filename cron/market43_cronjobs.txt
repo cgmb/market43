@@ -1,0 +1,2 @@
+0 * * * * /opt/market43/apply_item_effects.py 2>&1 /var/log/market43.log
+30 * * * * /opt/market43/closeout_listings.py 2>&1 /var/log/market43.log

@@ -31,6 +31,7 @@ create table listing (ListingId int unsigned auto_increment,
   ExpiryTimestamp timestamp not null,
   ListedItemId int unsigned not null,
   ListingUserId int unsigned not null,
+  Open bool not null default true,
   primary key (ListingId),
   foreign key (ListedItemId) references item(ItemId),
   foreign key (ListingUserId) references user(UserId));
