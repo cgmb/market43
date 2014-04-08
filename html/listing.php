@@ -110,7 +110,7 @@
 			}
 
 			# find a nice description of the item
-			$query = "SELECT t.Name, t.IconPath, t.Description
+			$query = "SELECT t.Name, t.IconPath, t.Description, l.MinimumBid
 				FROM listing as l
 				INNER JOIN item as i ON l.ListedItemId = i.ItemId
 				INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId
@@ -120,9 +120,11 @@
 			$name = mysql_result($result, 0, 't.Name');
 			$icon = mysql_result($result, 0, 't.IconPath');
 			$description = mysql_result($result, 0, 't.Description');
+			$minbid = mysql_result($result, 0, 'l.MinimumBid');
 
 			echo "<H1><img class=\"item-icon\" src=\"$icon\">$name</H1>";
 			echo "<em>$description</em>";
+			echo "<br>Minimum bid: $minbid";
 
 			echo '<H2>Current Bids:</H2>
 			<table>
