@@ -29,7 +29,7 @@
 		$search = mysql_real_escape_string($_POST['itemsearch']);
 
 		echo '<H2>Search Results:</H2>
-		<table>
+		<table class="item-table">
 			<colgroup>
 				<col style="width: 15%" />
 				<col style="width: 35%" />
@@ -49,7 +49,7 @@
 			FROM item AS i INNER JOIN item_type AS t ON i.ItemType = t.ItemTypeId
 	  	INNER JOIN listing as l ON i.ItemId = l.ListedItemId
 			INNER JOIN user AS u ON l.ListingUserId = u.UserId
-			INNER JOIN bid AS b ON l.ListingId = b.Listing
+			LEFT OUTER JOIN bid AS b ON (b.Listing IS NULL OR l.ListingId = b.Listing)
 			WHERE t.Name LIKE '%$search%' AND l.ListingUserId <> '$userid' AND l.Open <> 0
 			GROUP BY l.ListingId;";
 		$result = mysql_query($query) or die (mysql_error());
@@ -60,6 +60,9 @@
 			$description = mysql_result($result, $i, 't.Description');
 			$seller = mysql_result($result, $i, 'u.Nickname');
 			$bid = mysql_result($result, $i, 'CurrentBid');
+			if (empty($bid)) {
+				$bid = 0;
+			}
 			$listing = mysql_result($result, $i, 'l.ListingId');
 			echo "<tr>
 				<td>$bid</td>
