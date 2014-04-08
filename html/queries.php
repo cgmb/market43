@@ -38,8 +38,8 @@
 		$query = "SELECT SUM(b.Value) AS Liabilities
 			FROM bid AS b, listing AS l
 			WHERE b.Bidder = '$userid'
-			AND l.ExpiryTimestamp > CURRENT_TIMESTAMP
-			AND b.Listing = l.ListingId";
+			AND b.Listing = l.ListingId
+			AND l.Open <> 0";
 		$result = mysql_query($query) or die (mysql_error());
 		$liabilities = mysql_result($result, 0, 'Liabilities');
 		if (empty($liabilities)) {
@@ -71,7 +71,7 @@
 			WHERE i.ItemId NOT IN (
 				SELECT m.ItemId FROM item AS m
 				INNER JOIN listing AS l ON l.ListedItemId = m.ItemId
-				WHERE l.ExpiryTimestamp > CURRENT_TIMESTAMP
+				WHERE l.Open <> 0
 			);";
 		$result = mysql_query($query) or die (mysql_error());
 		$data = array();

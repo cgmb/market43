@@ -77,6 +77,10 @@ insert into credential (SaltedHash, User, Active) values (
   '$2a$08$z/S30rGGi7lm4DPMKz/S7O/GxvfEQsx7zRgjjZPukHjrF1ND0y9oq',
   4,
   true);
+insert into transaction (NetBalanceChange, TransactionType, TransactionUser) values (
+  300,
+  1,
+  4);
 
 insert into listing (MinimumBid, PostedTimestamp, ExpiryTimestamp,
 ListedItemId, ListingUserId) values (

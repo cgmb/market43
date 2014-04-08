@@ -66,7 +66,7 @@
 	$query = "SELECT DISTINCT l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath, b.Value
 	FROM listing AS l, item_type AS i, item AS x, bid as b
 	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing AND b.Bidder = '$userid'
-	AND x.ItemId = l.ListedItemId
+	AND x.ItemId = l.ListedItemId AND l.Open <> 0
 	ORDER BY l.ExpiryTimestamp;";
 
 	$result = mysql_query($query) or die (mysql_error());
@@ -104,7 +104,8 @@
 <?php
 	$query = "SELECT MAX(b.Value) CurrentBid, l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath
 	FROM listing AS l, item_type AS i, item AS x, bid as b
-	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing AND l.ListingUserId = '$userid'
+	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing
+    AND l.ListingUserId = '$userid' AND l.Open <> 0
 	GROUP BY l.ListingId
 	ORDER BY CurrentBid DESC;";
 
@@ -130,7 +131,7 @@
 	$query = "SELECT l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath
 	FROM listing AS l, item_type AS i, item AS x
 	WHERE i.ItemTypeId = x.ItemType AND l.ListingUserId = '$userid' 
-	AND l.ListingId NOT IN (SELECT Listing FROM bid)
+	AND l.ListingId NOT IN (SELECT Listing FROM bid) AND l.Open <> 0
 	GROUP BY l.ListingId
 	ORDER BY l.ExpiryTimestamp;";
 

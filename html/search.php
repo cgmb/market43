@@ -50,7 +50,7 @@
 	  	INNER JOIN listing as l ON i.ItemId = l.ListedItemId
 			INNER JOIN user AS u ON l.ListingUserId = u.UserId
 			INNER JOIN bid AS b ON l.ListingId = b.Listing
-			WHERE t.Name LIKE '%$search%' AND l.ListingUserId <> '$userid'
+			WHERE t.Name LIKE '%$search%' AND l.ListingUserId <> '$userid' AND l.Open <> 0
 			GROUP BY l.ListingId;";
 		$result = mysql_query($query) or die (mysql_error());
 		$rows = mysql_numrows($result);
