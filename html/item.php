@@ -26,7 +26,7 @@
 			# handle request to post listing
 			$errortext = '';
 			if (!empty($_POST)) {
-				if (!empty($_POST['minbid'])) {
+				if (!empty($_POST['minbid']) && $_POST['minbid'] > 0) {
 					$minbid = mysql_real_escape_string($_POST['minbid']);
 
 					# pick a random available item to be the subject of the auction

@@ -17,20 +17,64 @@
 	echo create_navbar('listing.php');
 
 	include('database_connect.php');
+	include('queries.php');
+	$errortext='';
 
 	if (!empty($_GET)) {
 		if (isset($_GET['id'])) {
 			$listingid = mysql_real_escape_string($_GET['id']);
 
 			if (!empty($_POST)) {
-#				todo: check that the user actually has available funds
-#				$balancequery = "SELECT Balance";
-#				$balanceresult = mysql_query($balancequery) or die (mysql_error());
-#				(mysql_numrows($balanceresult) == 1) or die('Unexpected user data!');
-#				$usablebalance = mysql_result($result, 0, 'UsableBalance');
+				$bidvalue = mysql_real_escape_string($_POST['bidvalue']);
+				$balance = get_player_balance($userid);
+
+        # validate!
+				# check the player has enough funds overall for the bid
+        if ($bidvalue > $balance) {
+          $errortext = 'That bid is greater than your balance!';
+					goto end_of_post; # there's gotta be a better way
+        }
+
+				# check the player has enough available funds for the bid
+				$availablefunds = $balance - get_player_liabilities($userid);
+        if ($bidvalue > $availablefunds) {
+          $errortext = 'Not enough available funds!<br>They\'re tied up in other bids!';
+					goto end_of_post;
+        }
+
+				# check the bid exceeds the minimum bid
+				$query = "SELECT ListingUserId, MinimumBid
+					FROM listing WHERE ListingId = '$listingid'";
+				$result = mysql_query($query) or die(mysql_error());
+				(mysql_numrows($result) >= 1) or die('Missing listing data!');
+				$minbid = mysql_result($result, 0, 'MinimumBid');
+				$listinguser = mysql_result($result, 0, 'ListingUserId');
+        if ($bidvalue < $minbid) {
+          $errortext = 'Bid is less than minimum bid!';
+					goto end_of_post;
+        }
+
+				# check that the bidder doesn't own the listing
+				# no take-backs!
+        if ($userid == $listinguser) {
+          $errortext = 'You can\'t bid on your own auction.<br>No takebacks!';
+					goto end_of_post;
+        }
+
+				# check the bid exceeds the current bids
+				$query = "SELECT MAX(Value) CurrentBid
+					FROM bid WHERE Listing = '$listingid'";
+				$result = mysql_query($query) or die(mysql_error());
+				$curbid = mysql_result($result, 0, 'CurrentBid');
+				if (empty($curbid)) {
+					$curbid = 0;
+				}
+        if ($bidvalue <= $curbid) {
+          $errortext = 'Bid is lower than existing bids!';
+					goto end_of_post;
+        }
 
 				# post the bid
-				$bidvalue = mysql_real_escape_string($_POST['bidvalue']);
 				$update = "INSERT INTO bid (Bidder, Listing, Value) values (
 					$userid, $listingid, $bidvalue)
 					ON DUPLICATE KEY UPDATE
@@ -38,6 +82,8 @@
 						Listing=values(Listing),
 						Value=values(Value);";
 				$updateresult = mysql_query($update) or die (mysql_error());
+
+				end_of_post:
 			}
 
 			# find the seller and the max bid
@@ -53,7 +99,8 @@
 			$currentbid = mysql_result($result2, 0, 'CurrentBid');
 
 			if ($sellerid != $userid) {
-				$minbid = $currentbid + 5;
+				$minbid = $currentbid + 1;
+				echo "<div class='error-text'>$errortext</div>";
 				echo "Bid on <strong>$seller</strong>'s listing?<br>";
 
 				echo "<form action='listing.php?id=$listingid' method='post'>
@@ -97,8 +144,8 @@
 				$bidder = mysql_result($result3, $i, 'u.Nickname');
 				$bid = mysql_result($result3, $i, 'b.Value');
 				echo "<tr>
-					<td>$bidder</td>
-					<td>$bid</td>
+					<td><center>$bidder</center></td>
+					<td><center>$bid</center></td>
 					</tr>";
 				$i++;
 			}
