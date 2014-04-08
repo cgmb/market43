@@ -90,16 +90,15 @@
 	}
 ?>
 
-<H2>Crafting Table</H2>
+<H2>Related Items</H2>
 <table class="item-table">
 	<colgroup>
-		<col style="width: 15%" />
+<!--		<col style="width: 15%" /> -->
 		<col style="width: 35%" />
 		<col style="width: 35%" />
-		<col style="width: 15%" />
 	</colgroup>
 	<tr>
-		<th>craft</th>
+<!--		<th>craft</th> -->
 		<th>item</th>
 		<th>description</th>
 	</tr>
@@ -117,12 +116,14 @@
 		$name=mysql_result($result, $i, "S.Name");
 		$icon=mysql_result($result, $i, "S.IconPath");
 		$description=mysql_result($result, $i, "S.Description");
-		echo "<tr>
-			<td></td>
-			<td><img class=\"item-icon\" src=\"$icon\">$name</td>
+		echo "<form action='item?typeid=$itemtype' method='post'>
+			<tr>" .
+#			<td><input type='button' value='craft' /></td>
+			"<td><img class=\"item-icon\" src=\"$icon\">$name</td>
 			<td>$description</td>
 			<td></td>
-		</tr>";
+		</tr>
+		</form>";
 		$i++;
 	}
  ?>
