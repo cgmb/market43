@@ -20,10 +20,10 @@ create table item (ItemId int unsigned auto_increment,
   foreign key (ItemType) references item_type(ItemTypeId),
   foreign key (OwnerUserId) references user(UserId));
 create table recipe (InputItemType int unsigned,
-  InputItemCount tinyint,
-  OutputItemType int unsigned,
+  InputItemCount tinyint not null,
+  OutputItemType int unsigned not null,
   foreign key (InputItemType) references item_type(ItemTypeId),
-  primary key (InputItemType, InputItemCount, OutputItemType),
+  primary key (InputItemType),
   foreign key (OutputItemType) references item_type(ItemTypeId));
 create table listing (ListingId int unsigned auto_increment,
   MinimumBid int unsigned not null,

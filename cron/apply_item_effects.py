@@ -25,21 +25,45 @@ cursor.execute("""SELECT u.UserId, i.ItemType
 """)
 db.commit()
 
+def insert_balance_change(user, value):
+  return ("INSERT INTO transaction (" +
+    "NetBalanceChange, TransactionType, TransactionUser) " +
+    "values (" + str(value) + ", 1, " + str(user) + ")")
+
+def insert_item(user, item):
+  return ("INSERT INTO item (ItemType, OwnerUserId) " +
+    "values (" + str(item) + ", " + str(user) + ")")
+
 writecursor = db.cursor()
 numrows = int(cursor.rowcount)
 for x in range(0, numrows):
   row = cursor.fetchone()
-  if (row[1] == 1):
+  user = row[0]
+  itemtype = row[1]
+  if (itemtype == 1):
     # Fountain of Money: Add 1000 credits
-    writecursor.execute("""INSERT INTO transaction (
-      NetBalanceChange, TransactionType, TransactionUser)
-      values (1000, 1, """ + str(row[0]) + ")")
-    print "giving 1000 credits to user " + str(row[0])
-  if (row[1] == 2):
+    writecursor.execute(insert_balance_change(user, 1000))
+    print "giving 1000 credits to user " + str(user)
+  if (itemtype == 2):
     # Magic Leaf: Add random item 
     item = random.choice(itemtypes)
-    writecursor.execute("""INSERT INTO item (ItemType, OwnerUserId)
-      values (""" + str(item) + ", " + str(row[0]) + ")")
-    print "giving item " + str(item) + " to user " + str(row[0])
+    writecursor.execute(insert_item(user, item))
+    print "giving item " + str(item) + " to user " + str(user)
+  if (itemtype == 3):
+    # Magic Leave: Add 3 random items
+    for x in range(3):
+      item = random.choice(itemtypes)
+      writecursor.execute(insert_item(user, item))
+      print "giving item " + str(item) + " to user " + str(user)
+  if (itemtype == 4):
+    # Magic Leave: Add 10 random items
+    for x in range(10):
+      item = random.choice(itemtypes)
+      writecursor.execute(insert_item(user, item))
+      print "giving item " + str(item) + " to user " + str(user)
+  if (itemtype == 5):
+    # Well of Money: Add 3000 credits
+    writecursor.execute(insert_balance_change(user, 3000))
+    print "giving 3000 credits to user " + str(user)
 
 db.commit()
