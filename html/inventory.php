@@ -23,13 +23,11 @@
 		<col style="width: 15%" />
 		<col style="width: 35%" />
 		<col style="width: 35%" />
-		<col style="width: 15%" />
 	</colgroup>
 	<tr>
 		<th>count</th>
 		<th>item</th>
 		<th>description</th>
-		<th>craftables</th>
 	</tr>
 
 <?php 
@@ -52,7 +50,6 @@
 			<td>$count</td>
 			<td><a href=\"item.php?typeid=$typeid\"><img class=\"item-icon\" src=\"$icon\">$name</a></td>
 			<td>$description</td>
-			<td></td>
 		</tr>";
 		$i++;
 	}
