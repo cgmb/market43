@@ -105,7 +105,8 @@
 	$query = "SELECT MAX(b.Value) CurrentBid, l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath
 	FROM listing AS l, item_type AS i, item AS x, bid as b
 	WHERE i.ItemTypeId = x.ItemType AND l.ListingId = b.Listing
-    AND l.ListingUserId = '$userid' AND l.Open <> 0
+	AND x.ItemId = l.ListedItemId
+	AND l.ListingUserId = '$userid' AND l.Open <> 0
 	GROUP BY l.ListingId
 	ORDER BY CurrentBid DESC;";
 
@@ -131,6 +132,7 @@
 	$query = "SELECT l.ListingId, timediff(l.ExpiryTimestamp, CURRENT_TIMESTAMP) TimeRemaining, i.Name, i.IconPath
 	FROM listing AS l, item_type AS i, item AS x
 	WHERE i.ItemTypeId = x.ItemType AND l.ListingUserId = '$userid' 
+	AND x.ItemId = l.ListedItemId
 	AND l.ListingId NOT IN (SELECT Listing FROM bid) AND l.Open <> 0
 	GROUP BY l.ListingId
 	ORDER BY l.ExpiryTimestamp;";
@@ -143,7 +145,7 @@
 		$icon = mysql_result($result, $i, 'i.IconPath');
 		$listing = mysql_result($result, $i, 'l.ListingId');
 		echo "<tr>
-			<td>0</td>
+			<td>N/A</td>
 			<td><a href=\"listing.php?id=$listing\">
 				<img class=\"item-icon\" src=\"$icon\">$name</a>
 			</td>
