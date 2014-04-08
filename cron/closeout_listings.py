@@ -26,11 +26,14 @@ for x in range(0, numrows):
   winner = 0
   saleprice = 0
   numbidderrows = int(cursor.rowcount)
-  for y in range(0, numbidderrows):
-    bidderrow = biddercursor.fetchone()
-    winner = bidderrow[0]
-    saleprice = bidderrow[1]
-    break;
+  for y in range(numbidderrows):
+    try:
+      bidderrow = biddercursor.fetchone()
+      winner = bidderrow[0]
+      saleprice = bidderrow[1]
+      break;
+    except:
+      break;
   if winner > 0:
     print "transfering " + str(item) + ":" + str(saleprice) + " between " + str(seller) + ":" + str(winner)
     writecursor.execute("UPDATE item SET OwnerUserId = " + str(winner) +
