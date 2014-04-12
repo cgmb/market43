@@ -19,20 +19,35 @@ insert into item_type (Name, IconPath, Rarity, Description) values (
   'leaf-3.png',
   4,
   'Receive 10 random items per day.');
-insert into recipe (InputItemType, InputItemCount, OutputItemType) values (
+insert into recipe () values ();
+insert into recipe_input (Recipe, InputItemType, InputItemCount) values (
+  1,
   2,
+  2);
+insert into recipe_output (Recipe, OutputItemType, OutputItemCount) values (
+  1,
+  3,
+  1);
+insert into recipe () values ();
+insert into recipe_input (Recipe, InputItemType, InputItemCount) values (
   2,
+  3,
   3);
-insert into recipe (InputItemType, InputItemCount, OutputItemType) values (
-  3,
-  3,
-  4);
+insert into recipe_output (Recipe, OutputItemType, OutputItemCount) values (
+  2,
+  4,
+  1);
 insert into item_type (Name, IconPath, Rarity, Description) values (
   'Well of Money',
   'fountain_of_money-2.png',
   3,
   'Receive 3000 credits per day.');
-insert into recipe (InputItemType, InputItemCount, OutputItemType) values (
+insert into recipe () values ();
+insert into recipe_input (Recipe, InputItemType, InputItemCount) values (
+  3,
   1,
-  2,
-  5);
+  2);
+insert into recipe_output (Recipe, OutputItemType, OutputItemCount) values (
+  3,
+  5,
+  1);

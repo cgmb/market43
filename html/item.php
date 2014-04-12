@@ -104,18 +104,18 @@
 	</tr>
 
 <?php 
-	$query = "SELECT R.OutputItemType, R.InputItemCount, S.Name, S.IconPath, S.Description
-		FROM recipe AS R, item_type AS T, item_type AS S
-		WHERE T.ItemTypeId = '$itemtype'
-		AND R.InputItemType = T.ItemTypeId
-		AND R.OutputItemType = S.ItemTypeId;";
+  $query = "SELECT t.Name, t.IconPath, t.Description
+		FROM recipe_input AS i
+		INNER JOIN recipe_output AS o ON i.Recipe = o.Recipe
+		INNER JOIN item_type AS t ON t.ItemTypeId = o.OutputItemType
+		WHERE i.InputItemType = '$itemtype'";
 
 	$result = mysql_query($query) or die (mysql_error());
 	$rows = mysql_numrows($result);
 	$i=0; while ($i < $rows) { 
-		$name=mysql_result($result, $i, "S.Name");
-		$icon=mysql_result($result, $i, "S.IconPath");
-		$description=mysql_result($result, $i, "S.Description");
+		$name=mysql_result($result, $i, "t.Name");
+		$icon=mysql_result($result, $i, "t.IconPath");
+		$description=mysql_result($result, $i, "t.Description");
 		echo "<form action='item?typeid=$itemtype' method='post'>
 			<tr>" .
 #			<td><input type='button' value='craft' /></td>
