@@ -55,8 +55,8 @@
 						$options = array('cost' => 8);
 						$hash = password_hash($pass, PASSWORD_BCRYPT, $options);
 
-						$query = "INSERT INTO credential (SaltedHash, User, Active) values (
-						'$hash', '$userid', true)";
+						$query = "INSERT INTO credential (User, SaltedHash) values (
+							'$userid', '$hash')";
 						if (mysql_query($query)) {
 							$_SESSION['userid'] = $userid;
 							header('Location: dashboard.php');

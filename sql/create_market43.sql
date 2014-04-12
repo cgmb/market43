@@ -58,6 +58,5 @@ create table bid (Bidder int unsigned,
   foreign key (Listing) references listing(ListingId));
 create table credential (SaltedHash binary(60),
   User int unsigned,
-  Active bool not null,
-  primary key (SaltedHash, User),
+  primary key (User),
   foreign key (User) references user(UserId));

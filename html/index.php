@@ -23,7 +23,7 @@
 			$_SESSION = array();
 			$query="SELECT u.UserId, c.SaltedHash
 				FROM user AS u INNER JOIN credential AS c ON c.User = u.UserId
-				WHERE u.Email = '$email' AND c.Active <> 0;";
+				WHERE u.Email = '$email';";
 			$result = mysql_query($query) or die (mysql_error());
 			$rows = mysql_numrows($result);
 			$i=0; while ($i < $rows) { 
